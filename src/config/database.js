@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const mongoURI = process.env.APP_MODE == 'local' ? process.env.MONGO_URI_LOCAL : process.env.MONGO_URI_PROD;
-const dbType = process.env.APP_MODE == 'local' ? 'Dev' : 'Prod';
+const mongoURI = process.env.MONGO_URI;
 
 mongoose
 	.connect(mongoURI, {
@@ -10,6 +9,6 @@ mongoose
 		useFindAndModify: false
 	})
 	.then((db) => {
-		console.log(`Database connected - ${dbType}`);
+		console.log(`[log] Database connected`);
 	})
-	.catch((err) => console.log(err));
+	.catch((err) => console.log('[error]' + err));
