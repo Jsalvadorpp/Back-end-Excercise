@@ -1,3 +1,5 @@
+const CurrencyFormat = require('../models/currencyFormats');
+
 exports.getAllFormats = async (req, res) => {
 	res.send({
 		type: 'Success',
@@ -15,11 +17,19 @@ exports.getFormatByCountry = async (req, res) => {
 };
 
 exports.createFormat = async (req, res) => {
-	res.send({
-		type: 'Success',
-		message: 'entry created successfully in database',
-		data: {}
-	});
+	try {
+		let newCurrencyFormat = new CurrencyFormat(req.body);
+		await newCurrencyFormat.save();
+
+		let data = {
+			currencyFormat: newCurrencyFormat
+		};
+
+		res.send({ type: 'Success', message: 'entry created successfully in database', data });
+	} catch (error) {
+		console.log(`[Error] - ${error}`);
+		res.send({ type: 'Error', message: 'Error in creating the format' });
+	}
 };
 
 exports.updateFormat = async (req, res) => {
