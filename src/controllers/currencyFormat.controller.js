@@ -1,11 +1,15 @@
 const CurrencyFormat = require('../models/currencyFormats');
 
 exports.getAllFormats = async (req, res) => {
-	res.send({
-		type: 'Success',
-		message: 'data obtained',
-		data: {}
-	});
+	try {
+		const currencyFormats = await CurrencyFormat.find({});
+		let data = { currencyFormats };
+
+		res.send({ type: 'Success', message: 'data obtained', data });
+	} catch (error) {
+		console.log(`[Error] - ${error}`);
+		res.send({ type: 'Error', message: 'Error in getting the data' });
+	}
 };
 
 exports.getFormatByCountry = async (req, res) => {
