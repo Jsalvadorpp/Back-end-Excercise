@@ -5,8 +5,6 @@ const chai = require('chai');
 const expect = chai.expect;
 const chaihttp = require('chai-http');
 const { app } = require('../../index');
-const should = chai.should();
-const sinon = require('sinon');
 
 chai.use(chaihttp);
 
@@ -21,6 +19,7 @@ describe('currencyFormat_controller', function() {
 		});
 	});
 
+	// endpoint to get all currency formats
 	describe('getAllCurrencyFormats', function() {
 		it('should get array of currency formats', function(done) {
 			chai.request(app).get('/currencyFormats').end((err, res) => {
@@ -59,6 +58,35 @@ describe('currencyFormat_controller', function() {
 
 			expect(res.body).to.have.property('type');
 			expect(res.body).to.have.property('message');
+			expect(res.body).to.have.property('data');
+			expect(res.body.data).to.have.property('currencyFormats');
+
+			expect(res.body.data.currencyFormats).to.be.an('array');
+			expect(res.body.data.currencyFormats.length).to.equal(1);
+		});
+	});
+
+	// endpoint to get currency formats by country
+	describe('getFormatByCountry', function() {
+		it('should get array of currency formats for the Spain Country', async function() {
+			let newCurrencyFormat = new CurrencyFormat({
+				currencyAfterPrice: false,
+				showCents: true,
+				thousandDelimeter: 'comma',
+				currencyDisplay: 'symbol',
+				marketCountry: 'Spain',
+				currency: 'EUR'
+			});
+			await newCurrencyFormat.save();
+
+			let res = await chai.request(app).get('/currencyFormat?country=Spain');
+
+			expect(res).to.have.status(200);
+			expect(res).to.be.json;
+			expect(res.body).to.be.an('object');
+
+			expect(res.body).to.have.property('type').eql('Success');
+			expect(res.body).to.have.property('message').eql('data obtained');
 			expect(res.body).to.have.property('data');
 			expect(res.body.data).to.have.property('currencyFormats');
 
