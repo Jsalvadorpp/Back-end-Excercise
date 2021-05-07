@@ -13,11 +13,15 @@ exports.getAllFormats = async (req, res) => {
 };
 
 exports.getFormatByCountry = async (req, res) => {
-	res.send({
-		type: 'Success',
-		message: 'data obtained',
-		data: {}
-	});
+	try {
+		const currencyFormats = await CurrencyFormat.find({ marketCountry: req.query.country });
+		let data = { currencyFormats };
+
+		res.send({ type: 'Success', message: 'data obtained', data });
+	} catch (error) {
+		console.log(`[Error] - ${error}`);
+		res.send({ type: 'Error', message: 'Error in getting the data' });
+	}
 };
 
 exports.createFormat = async (req, res) => {
