@@ -9,12 +9,12 @@ const currencies = require('../utils/availableCurrencies');
 // routes
 router.get('/currencyFormats', currencyFormat.getAllFormats);
 router.get('/currencyFormat', currencyFormat.getFormatByCountry);
-router.post('/currencyFormat', createFormatSchema, currencyFormat.createFormat);
-router.put('/currencyFormat', currencyFormat.updateFormat);
+router.post('/currencyFormat', FormatSchema, currencyFormat.createFormat);
+router.put('/currencyFormat', FormatSchema, currencyFormat.updateFormat);
 router.delete('/currencyFormat', currencyFormat.removeFormat);
 
 // check input before going to the controller
-function createFormatSchema(req, res, next) {
+function FormatSchema(req, res, next) {
 	const schema = Joi.object({
 		currencyAfterPrice: Joi.boolean().required(),
 		showCents: Joi.boolean().required(),

@@ -4,7 +4,7 @@ const currencies = require('../utils/availableCurrencies');
 
 const currencyFormatSchema = new Schema(
 	{
-		currencyFormat: Boolean,
+		currencyAfterPrice: Boolean,
 		showCents: Boolean,
 		thousandDelimeter: {
 			type: String,

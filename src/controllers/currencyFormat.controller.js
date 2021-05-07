@@ -54,12 +54,32 @@ exports.createFormat = async (req, res) => {
 };
 
 exports.updateFormat = async (req, res) => {
-	res.send({
-		type: 'Success',
-		message: 'entry updated successfully in database',
-		data: {}
-	});
+	try {
+		let formatToUpdate = await CurrencyFormat.findOne({
+			marketCountry: req.body.marketCountry,
+			currency: req.body.currency
+		});
+
+		if (formatToUpdate) {
+			// update fields
+			formatToUpdate.currencyAfterPrice = req.body.currencyAfterPrice;
+			formatToUpdate.showCents = req.body.showCents;
+			formatToUpdate.thousandDelimeter = req.body.thousandDelimeter;
+			formatToUpdate.currencyDisplay = req.body.currencyDisplay;
+
+			await formatToUpdate.save();
+			let data = { currencyFormat: formatToUpdate };
+
+			res.send({ type: 'Success', message: 'entry updated successfully in database', data });
+		} else {
+			res.send({ type: 'Error', message: 'this currency format does not exist' });
+		}
+	} catch (error) {
+		console.log(`[Error] - ${error}`);
+		res.send({ type: 'Error', message: 'Error in updating the format' });
+	}
 };
+
 exports.removeFormat = async (req, res) => {
 	try {
 		let formatToDelete = await CurrencyFormat.findOne({
