@@ -15,3 +15,4 @@ app.use(express.json({ limit: '10mb' })); // for parsing application/json
 app.use(require('./src/routes/currencyFormat.route'));
 
 module.exports.handler = serverless(app);
+module.exports.app = app;

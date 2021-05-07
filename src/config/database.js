@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const mongoURI = process.env.MONGO_URI;
+const mongoURI = process.env.NODE_ENV == 'test' ? process.env.MONGO_URI_TEST : process.env.MONGO_URI;
 
 mongoose
 	.connect(mongoURI, {
@@ -9,6 +9,6 @@ mongoose
 		useFindAndModify: false
 	})
 	.then((db) => {
-		console.log(`[log] Database connected`);
+		console.log(`[log] Database connected ${process.env.NODE_ENV == 'test' ? '- test' : ''}`);
 	})
 	.catch((err) => console.log('[error]' + err));
