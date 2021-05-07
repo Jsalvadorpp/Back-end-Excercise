@@ -17,6 +17,19 @@ exports.getFormatByCountry = async (req, res) => {
 };
 
 exports.createFormat = async (req, res) => {
+	let formatAlreadyExists = await CurrencyFormat.findOne({
+		marketCountry: req.body.marketCountry,
+		currency: req.body.currency
+	});
+
+	//prevents duplicate entries
+	if (formatAlreadyExists) {
+		return res.send({
+			type: 'Error',
+			message: 'The format with the selected country and currency already exist in the database'
+		});
+	}
+
 	try {
 		let newCurrencyFormat = new CurrencyFormat(req.body);
 		await newCurrencyFormat.save();
