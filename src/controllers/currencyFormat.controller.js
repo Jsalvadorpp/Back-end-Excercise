@@ -61,9 +61,20 @@ exports.updateFormat = async (req, res) => {
 	});
 };
 exports.removeFormat = async (req, res) => {
-	res.send({
-		type: 'Success',
-		message: 'entry removed from database',
-		data: {}
-	});
+	try {
+		let formatToDelete = await CurrencyFormat.findOne({
+			marketCountry: req.body.country,
+			currency: req.body.currency
+		});
+
+		if (formatToDelete) {
+			await formatToDelete.remove();
+			res.send({ type: 'Success', message: 'entry removed from database' });
+		} else {
+			res.send({ type: 'Error', message: 'this currency format does not exist' });
+		}
+	} catch (error) {
+		console.log(`[Error] - ${error}`);
+		res.send({ type: 'Error', message: 'Error in deleting the entry from the database' });
+	}
 };
