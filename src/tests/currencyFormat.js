@@ -21,6 +21,13 @@ describe('currencyFormat_controller', function() {
 		});
 	});
 
+	afterEach((done) => {
+		//After each test we empty the database
+		CurrencyFormat.deleteMany({}, (err) => {
+			done();
+		});
+	});
+
 	// endpoint to get all currency formats
 	describe('getAllCurrencyFormats', function() {
 		it('should get array of currency formats', function(done) {
@@ -162,6 +169,56 @@ describe('currencyFormat_controller', function() {
 			};
 
 			let res = await chai.request(app).post('/currencyFormat').send(newCurrencyFormat);
+
+			expect(res).to.have.status(200);
+			expect(res).to.be.json;
+			expect(res.body).to.be.an('object');
+			expect(res.body).to.have.property('type').eql('Error');
+		});
+	});
+
+	// endpoint to update an existing currency format
+	describe('updateFormat', function() {
+		it('should return an updated field of the selected country and currency ', async function() {
+			let AlreadyExists = new CurrencyFormat({
+				currencyAfterPrice: false,
+				showCents: true,
+				thousandDelimeter: 'comma',
+				currencyDisplay: 'symbol',
+				marketCountry: 'Spain',
+				currency: 'EUR'
+			});
+			await AlreadyExists.save();
+
+			let updatedCurrencyFormat = {
+				currencyAfterPrice: false,
+				showCents: true,
+				thousandDelimeter: 'comma',
+				currencyDisplay: 'code',
+				marketCountry: 'Spain',
+				currency: 'EUR'
+			};
+
+			let res = await chai.request(app).put('/currencyFormat').send(updatedCurrencyFormat);
+
+			expect(res).to.have.status(200);
+			expect(res).to.be.json;
+			expect(res.body).to.be.an('object');
+			expect(res.body).to.have.property('type').eql('Success');
+			expect(res.body.data.currencyFormat.currencyDisplay).eql(updatedCurrencyFormat.currencyDisplay);
+		});
+
+		it('should return error if trying to update a format with the selected country and currency that does not exist ', async function() {
+			let updatedCurrencyFormat = {
+				currencyAfterPrice: false,
+				showCents: true,
+				thousandDelimeter: 'comma',
+				currencyDisplay: 'symbol',
+				marketCountry: 'Spain',
+				currency: 'EUR'
+			};
+
+			let res = await chai.request(app).put('/currencyFormat').send(updatedCurrencyFormat);
 
 			expect(res).to.have.status(200);
 			expect(res).to.be.json;
