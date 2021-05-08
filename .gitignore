@@ -7,3 +7,6 @@ jspm_packages
 
 # environment variables
 .env
+
+# nyc coverage output
+.nyc_output

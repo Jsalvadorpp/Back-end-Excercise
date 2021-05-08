@@ -1,0 +1,11 @@
+{
+  "nyc": {
+    "all": true,
+    "include": [
+      "src/test/**.js"
+    ],
+    "exclude": [
+      
+    ]
+  }
+}

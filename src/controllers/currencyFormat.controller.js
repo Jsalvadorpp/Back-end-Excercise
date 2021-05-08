@@ -7,6 +7,7 @@ exports.getAllFormats = async (req, res) => {
 
 		res.send({ type: 'Success', message: 'data obtained', data });
 	} catch (error) {
+		/* istanbul ignore next */
 		console.log(`[Error] - ${error}`);
 		res.send({ type: 'Error', message: 'Error in getting the data' });
 	}
@@ -19,6 +20,7 @@ exports.getFormatByCountry = async (req, res) => {
 
 		res.send({ type: 'Success', message: 'data obtained', data });
 	} catch (error) {
+		/* istanbul ignore next */
 		console.log(`[Error] - ${error}`);
 		res.send({ type: 'Error', message: 'Error in getting the data' });
 	}
@@ -48,6 +50,7 @@ exports.createFormat = async (req, res) => {
 
 		res.send({ type: 'Success', message: 'entry created successfully in database', data });
 	} catch (error) {
+		/* istanbul ignore next */
 		console.log(`[Error] - ${error}`);
 		res.send({ type: 'Error', message: 'Error in creating the format' });
 	}
@@ -75,6 +78,7 @@ exports.updateFormat = async (req, res) => {
 			res.send({ type: 'Error', message: 'this currency format does not exist' });
 		}
 	} catch (error) {
+		/* nyc ignore next */
 		console.log(`[Error] - ${error}`);
 		res.send({ type: 'Error', message: 'Error in updating the format' });
 	}
@@ -94,6 +98,7 @@ exports.removeFormat = async (req, res) => {
 			res.send({ type: 'Error', message: 'this currency format does not exist' });
 		}
 	} catch (error) {
+		/* istanbul ignore next */
 		console.log(`[Error] - ${error}`);
 		res.send({ type: 'Error', message: 'Error in deleting the entry from the database' });
 	}

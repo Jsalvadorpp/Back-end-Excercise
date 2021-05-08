@@ -9,6 +9,10 @@ mongoose
 		useFindAndModify: false
 	})
 	.then((db) => {
+		/* istanbul ignore next */
 		console.log(`[log] Database connected ${process.env.NODE_ENV == 'test' ? '- test' : ''}`);
 	})
-	.catch((err) => console.log('[error]' + err));
+	.catch((err) => {
+		/* istanbul ignore next */
+		console.log('[error]' + err);
+	});
