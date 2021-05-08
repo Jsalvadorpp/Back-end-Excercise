@@ -226,4 +226,45 @@ describe('currencyFormat_controller', function() {
 			expect(res.body).to.have.property('type').eql('Error');
 		});
 	});
+
+	// endpoint to delete an existing currency format
+	describe('removeFormat', function() {
+		it('should return error if trying to delete a format with the selected country and currency that does not exist ', async function() {
+			let formatToDelete = {
+				marketCountry: 'Spain',
+				currency: 'EUR'
+			};
+
+			let res = await chai.request(app).delete('/currencyFormat').send(formatToDelete);
+
+			expect(res).to.have.status(200);
+			expect(res).to.be.json;
+			expect(res.body).to.be.an('object');
+			expect(res.body).to.have.property('type').eql('Error');
+		});
+
+		it('should remove an existing currency format from the system', async function() {
+			let AlreadyExists = new CurrencyFormat({
+				currencyAfterPrice: false,
+				showCents: true,
+				thousandDelimeter: 'comma',
+				currencyDisplay: 'symbol',
+				marketCountry: 'Spain',
+				currency: 'EUR'
+			});
+			await AlreadyExists.save();
+
+			let formatToDelete = {
+				country: 'Spain',
+				currency: 'EUR'
+			};
+
+			let res = await chai.request(app).delete('/currencyFormat').send(formatToDelete);
+
+			expect(res).to.have.status(200);
+			expect(res).to.be.json;
+			expect(res.body).to.be.an('object');
+			expect(res.body).to.have.property('type').eql('Success');
+		});
+	});
 });
