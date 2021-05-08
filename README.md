@@ -28,3 +28,16 @@ This code uses MongoDB as databasse, you have to set up the database url in a fi
 ## Documentation
 
 All the documentation can be found in postman in the following [Link](https://documenter.getpostman.com/view/13154203/TzRRDoTu)
+
+## Test
+
+For Unit test use: 
+```
+  npm run test
+```
+For code coverage: 
+```
+  npm run coverage
+```
+
+
